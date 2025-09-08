@@ -168,7 +168,7 @@
 // 	})
 // }
 
-package example
+package example_test
 
 import (
 	"context"
@@ -176,7 +176,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/basillica/state-machine/statemachine"
+	"github.com/your-username/go-statemachine/statemachine"
 )
 
 // A separate set of tasks for testing to ensure no side effects
