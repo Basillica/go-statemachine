@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/your-username/go-statemachine/statemachine"
+	"github.com/basillica/go-statemachine/statemachine"
 )
 
 var (

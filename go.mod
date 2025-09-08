@@ -1,3 +1,3 @@
-module github.com/your-username/go-statemachine
+module github.com/basillica/go-statemachine
 
 go 1.23.3
