@@ -1,0 +1,107 @@
+{
+  "StartAt": "StartTask",
+  "States": {
+    "StartTask": {
+      "Type": "Task",
+      "Next": "TestMapState"
+    },
+    "TestMapState": {
+      "Type": "Map",
+      "InputPath": "$.items_to_process",
+      "Iterator": {
+        "StartAt": "MapTask",
+        "States": {
+          "MapTask": {
+            "Type": "Task",
+            "Next": "MapEnd"
+          },
+          "MapEnd": {
+            "Type": "End"
+          }
+        }
+      },
+      "ResultPath": "$.map_output",
+      "Next": "TestChoiceState"
+    },
+    "TestChoiceState": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Condition": {
+            "InputPath": "$.choice_value",
+            "StringEquals": "go"
+          },
+          "Next": "TestParallelState"
+        },
+        {
+          "Condition": {
+            "InputPath": "$.choice_value",
+            "NumericEquals": 10
+          },
+          "Next": "WaitState"
+        }
+      ],
+      "Default": "DefaultTask"
+    },
+    "TestParallelState": {
+      "Type": "Parallel",
+      "Next": "WaitState",
+      "Branches": [
+        {
+          "StartAt": "BranchATask",
+          "States": {
+            "BranchATask": {
+              "Type": "Task",
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "BranchBTask",
+          "States": {
+            "BranchBTask": {
+              "Type": "Task",
+              "End": true
+            }
+          }
+        }
+      ]
+    },
+    "WaitState": {
+      "Type": "Wait",
+      "Seconds": 1,
+      "Next": "TestRetryCatch"
+    },
+    "TestRetryCatch": {
+      "Type": "Task",
+      "Next": "FinalEnd",
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "API_BAD_GATEWAY"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3
+        }
+      ],
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "API_BAD_GATEWAY"
+          ],
+          "Next": "FailState"
+        }
+      ]
+    },
+    "DefaultTask": {
+      "Type": "Task",
+      "End": true
+    },
+    "FailState": {
+      "Type": "Fail"
+    },
+    "FinalEnd": {
+      "Type": "End"
+    }
+  }
+}
