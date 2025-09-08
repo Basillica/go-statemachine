@@ -28,7 +28,7 @@ A simple and extensible state machine implementation in Go, designed to orchestr
 
 1.  Clone this repository:
     ```bash
-    git clone <repository-url>
+    git clone git@github.com:Basillica/go-statemachine.git
     cd go-state-machine
     ```
 2.  Run the programmatic example:
